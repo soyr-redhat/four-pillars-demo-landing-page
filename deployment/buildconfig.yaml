@@ -1,0 +1,33 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: landing-page
+  namespace: four-pillars-demo-webapp-landing-page
+  labels:
+    app: landing-page
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: landing-page
+  namespace: four-pillars-demo-webapp-landing-page
+  labels:
+    app: landing-page
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: landing-page:latest
+  source:
+    type: Git
+    git:
+      uri: https://github.com/yourusername/4_pillars_demos.git
+      ref: main
+    contextDir: 0_landing_page/frontend
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+  triggers:
+  - type: ConfigChange
+  - type: ImageChange

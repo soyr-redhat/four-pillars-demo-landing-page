@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Hat AI - Four Pillars Demos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@700;900&family=Red+Hat+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --red-primary: #EE0000;
+            --red-hover: #FF3333;
+            --dark-bg: #0A0A0A;
+            --dark-surface: #151515;
+            --dark-elevated: #1F1F1F;
+            --grid-line: rgba(238, 0, 0, 0.08);
+            --grid-line-bright: rgba(238, 0, 0, 0.2);
+            --text-primary: #FFFFFF;
+            --text-secondary: #B8B8B8;
+            --text-tertiary: #6B6B6B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Red Hat Text', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Background Grid System */
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .grid-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(238, 0, 0, 0.03), transparent 70%);
+        }
+
+        /* Accent Lines */
+        .accent-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--red-primary), transparent);
+            animation: pulse-line 3s ease-in-out infinite;
+        }
+
+        .accent-line.top {
+            top: 20%;
+            left: 0;
+            width: 60%;
+            transform: rotate(-2deg);
+        }
+
+        .accent-line.bottom {
+            bottom: 30%;
+            right: 0;
+            width: 50%;
+            transform: rotate(1deg);
+            animation-delay: 1.5s;
+        }
+
+        @keyframes pulse-line {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--grid-line-bright);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-mark {
+            width: 40px;
+            height: 40px;
+            background: var(--red-primary);
+            clip-path: polygon(0 0, 100% 0, 100% 75%, 75% 100%, 0 100%);
+            position: relative;
+        }
+
+        .logo-mark::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+
+        .system-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            letter-spacing: 0.1em;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 0 6rem;
+            position: relative;
+        }
+
+        .hero-title {
+            font-family: 'Red Hat Display', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-title .accent {
+            color: var(--red-primary);
+            -webkit-text-fill-color: var(--red-primary);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-bottom: 3rem;
+            font-weight: 500;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--red-primary);
+            border-radius: 50%;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        /* Demo Grid */
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2rem;
+            padding: 4rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Demo Card */
+        .demo-card {
+            background: var(--dark-surface);
+            border: 1px solid var(--grid-line-bright);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .demo-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(238, 0, 0, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .demo-card:hover::before {
+            opacity: 1;
+        }
+
+        .demo-card:hover {
+            border-color: var(--red-primary);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
+                        0 0 0 1px var(--red-primary);
+        }
+
+        .demo-card.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .demo-card.disabled:hover {
+            transform: none;
+            border-color: var(--grid-line-bright);
+            box-shadow: none;
+        }
+
+        .card-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--grid-line);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--dark-elevated);
+            border: 2px solid var(--grid-line-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .demo-card:hover .card-icon {
+            background: var(--red-primary);
+            border-color: var(--red-primary);
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        .status-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .status-badge.active {
+            background: rgba(0, 255, 0, 0.1);
+            color: #00FF00;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+        }
+
+        .status-badge.coming-soon {
+            background: rgba(255, 165, 0, 0.1);
+            color: #FFA500;
+            border: 1px solid rgba(255, 165, 0, 0.3);
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .card-title {
+            font-family: 'Red Hat Display', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .card-pillar {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--red-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--grid-line);
+        }
+
+        .launch-btn {
+            font-family: 'Red Hat Text', sans-serif;
+            font-weight: 600;
+            font-size: 0.875rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--dark-elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--grid-line-bright);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .demo-card:not(.disabled):hover .launch-btn {
+            background: var(--red-primary);
+            border-color: var(--red-primary);
+            transform: translateX(4px);
+        }
+
+        .launch-btn::after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+
+        .demo-card:not(.disabled):hover .launch-btn::after {
+            transform: translateX(4px);
+        }
+
+        .card-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--grid-line-bright);
+            padding: 3rem 0;
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .powered-by {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .openshift-badge {
+            background: var(--dark-elevated);
+            border: 1px solid var(--grid-line-bright);
+            padding: 0.5rem 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--red-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--red-primary);
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero {
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        .demo-card {
+            animation: slideInUp 0.8s ease-out backwards;
+        }
+
+        .demo-card:nth-child(1) { animation-delay: 0.1s; }
+        .demo-card:nth-child(2) { animation-delay: 0.2s; }
+        .demo-card:nth-child(3) { animation-delay: 0.3s; }
+        .demo-card:nth-child(4) { animation-delay: 0.4s; }
+
+        /* Scan line effect */
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--red-primary), transparent);
+            opacity: 0.3;
+            animation: scan 8s linear infinite;
+            pointer-events: none;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-background"></div>
+    <div class="accent-line top"></div>
+    <div class="accent-line bottom"></div>
+    <div class="scan-line"></div>
+
+    <header>
+        <div class="container">
+            <div class="logo-area">
+                <div class="logo-mark"></div>
+                <div>
+                    <div class="system-id">SYSTEM_ID: RHAI_DEMO_PORTAL</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1 class="hero-title">
+                    <span class="accent">Red Hat AI</span><br>
+                    Four Pillars Demos
+                </h1>
+                <p class="hero-subtitle">
+                    Interactive demonstrations showcasing the four fundamental pillars of modern AI infrastructure: Agentic AI, High-Performance Inference, Synthetic Data, and Distributed LLM Deployment.
+                </p>
+                <div class="hero-meta">
+                    <div class="meta-item">
+                        <span class="status-dot"></span>
+                        <span>2 ACTIVE</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>2 COMING SOON</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>OPENSHIFT READY</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="demos">
+            <div class="container">
+                <div class="demo-grid">
+                    <!-- Demo 1: Factory Floor Tycoon -->
+                    <div class="demo-card" onclick="launchDemo('factory-floor-tycoon')">
+                        <div class="card-header">
+                            <div class="card-icon">🏭</div>
+                            <span class="status-badge active">ACTIVE</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-pillar">Pillar 01 / Agentic AI</div>
+                            <h3 class="card-title">Factory Floor Tycoon</h3>
+                            <p class="card-description">
+                                Program and deploy autonomous AI agents that compete in a simulated factory environment. Test different strategies, watch agents make real-time decisions, and optimize for maximum efficiency.
+                            </p>
+                            <div class="card-footer">
+                                <span class="card-meta">NAMESPACE: factory-floor-tycoon</span>
+                                <button class="launch-btn">Launch Demo</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 2: Speed Showdown -->
+                    <div class="demo-card" onclick="launchDemo('speed-showdown')">
+                        <div class="card-header">
+                            <div class="card-icon">⚡</div>
+                            <span class="status-badge active">ACTIVE</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-pillar">Pillar 02 / Inference Performance</div>
+                            <h3 class="card-title">Speed Showdown</h3>
+                            <p class="card-description">
+                                Experience the dramatic performance difference between standard inference and vLLM-optimized deployment. Race identical prompts side-by-side and see real-time token generation metrics.
+                            </p>
+                            <div class="card-footer">
+                                <span class="card-meta">NAMESPACE: speed-showdown</span>
+                                <button class="launch-btn">Launch Demo</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 3: Real or Fake -->
+                    <div class="demo-card disabled">
+                        <div class="card-header">
+                            <div class="card-icon">🎭</div>
+                            <span class="status-badge coming-soon">COMING SOON</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-pillar">Pillar 03 / Synthetic Data</div>
+                            <h3 class="card-title">Real or Fake?</h3>
+                            <p class="card-description">
+                                Challenge your perception in this data detective game. Distinguish between real and AI-generated synthetic data across multiple domains: reviews, code, profiles, and more.
+                            </p>
+                            <div class="card-footer">
+                                <span class="card-meta">STATUS: IN DEVELOPMENT</span>
+                                <button class="launch-btn" disabled>Coming Soon</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 4: Traffic Control -->
+                    <div class="demo-card disabled">
+                        <div class="card-header">
+                            <div class="card-icon">🌐</div>
+                            <span class="status-badge coming-soon">COMING SOON</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-pillar">Pillar 04 / LLMs at Scale</div>
+                            <h3 class="card-title">Traffic Control</h3>
+                            <p class="card-description">
+                                Visualize distributed LLM deployment in action. Watch requests flow through a load-balanced cluster, observe auto-scaling behavior, and stress-test the system under heavy load.
+                            </p>
+                            <div class="card-footer">
+                                <span class="card-meta">STATUS: IN DEVELOPMENT</span>
+                                <button class="launch-btn" disabled>Coming Soon</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="powered-by">
+                    <span>Powered by</span>
+                    <span class="openshift-badge">OpenShift</span>
+                </div>
+                <div class="footer-links">
+                    <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift/openshift-ai" target="_blank">Red Hat OpenShift AI</a>
+                    <a href="https://www.redhat.com/en/technologies/cloud-computing/openshift" target="_blank">OpenShift</a>
+                    <a href="https://docs.redhat.com/" target="_blank">Documentation</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function launchDemo(namespace) {
+            // Use Red Hat short links for traffic tracking
+            const routes = {
+                'factory-floor-tycoon': 'https://red.ht/factory-floor',
+                'speed-showdown': 'https://red.ht/speed-showdown'
+            };
+
+            if (routes[namespace]) {
+                window.open(routes[namespace], '_blank');
+            }
+        }
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key >= '1' && e.key <= '2') {
+                const demos = ['factory-floor-tycoon', 'speed-showdown'];
+                launchDemo(demos[parseInt(e.key) - 1]);
+            }
+        });
+
+        // Add particle effect on mouse move (subtle)
+        let mouseTimeout;
+        document.addEventListener('mousemove', (e) => {
+            clearTimeout(mouseTimeout);
+            mouseTimeout = setTimeout(() => {
+                createParticle(e.clientX, e.clientY);
+            }, 100);
+        });
+
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.style.position = 'fixed';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.width = '2px';
+            particle.style.height = '2px';
+            particle.style.background = 'var(--red-primary)';
+            particle.style.borderRadius = '50%';
+            particle.style.pointerEvents = 'none';
+            particle.style.zIndex = '1000';
+            particle.style.opacity = '0.6';
+            particle.style.transition = 'all 0.5s ease-out';
+
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.style.transform = 'translate(-50%, -50%) scale(0)';
+                particle.style.opacity = '0';
+            }, 10);
+
+            setTimeout(() => {
+                document.body.removeChild(particle);
+            }, 500);
+        }
+    </script>
+</body>
+</html>
