@@ -466,6 +466,135 @@
             pointer-events: none;
             z-index: 999;
         }
+
+        /* Four Pillars Button */
+        .pillars-info-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .pillars-info-btn {
+            background: var(--dark-elevated);
+            border: 1px solid var(--grid-line-bright);
+            color: var(--text-secondary);
+            padding: 0.75rem 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pillars-info-btn:hover {
+            background: var(--red-primary);
+            border-color: var(--red-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .pillars-dropdown {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            right: 0;
+            background: var(--dark-elevated);
+            border: 2px solid var(--red-primary);
+            border-radius: 4px;
+            min-width: 600px;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-20px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0);
+        }
+
+        .pillars-dropdown.active {
+            max-height: 800px;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8),
+                        0 0 0 1px var(--red-primary);
+        }
+
+        /* Four Pillars Tabs */
+        .pillars-tabs-container {
+            background: var(--dark-surface);
+            overflow: hidden;
+        }
+
+        .pillars-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--grid-line-bright);
+            background: var(--dark-elevated);
+        }
+
+        .pillar-tab {
+            flex: 1;
+            padding: 1rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            text-align: center;
+        }
+
+        .pillar-tab:hover {
+            color: var(--text-primary);
+            background: var(--dark-surface);
+        }
+
+        .pillar-tab.active {
+            color: var(--red-primary);
+            background: var(--dark-surface);
+            border-bottom-color: var(--red-primary);
+        }
+
+        .pillar-content {
+            padding: 2rem;
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .pillar-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pillar-content-title {
+            font-family: 'Red Hat Display', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .pillar-content-desc {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -488,10 +617,71 @@
     <main>
         <section class="hero">
             <div class="container">
-                <h1 class="hero-title">
-                    <span class="accent">Red Hat AI</span><br>
-                    Four Pillars Demos
-                </h1>
+                <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; margin-bottom: 1.5rem;">
+                    <h1 class="hero-title">
+                        <span class="accent">Red Hat AI</span><br>
+                        Four Pillars Demos
+                    </h1>
+
+                    <!-- Four Pillars Dropdown Button -->
+                    <div class="pillars-info-container">
+                        <button class="pillars-info-btn" onclick="togglePillarsDropdown(event)">
+                            <span>What are the 4 Pillars?</span>
+                            <span>▼</span>
+                        </button>
+                        <div class="pillars-dropdown" id="pillarsDropdown">
+                            <div class="pillars-tabs-container">
+                                <div class="pillars-tabs">
+                                    <button class="pillar-tab active" onclick="showPillar(1)">1</button>
+                                    <button class="pillar-tab" onclick="showPillar(2)">2</button>
+                                    <button class="pillar-tab" onclick="showPillar(3)">3</button>
+                                    <button class="pillar-tab" onclick="showPillar(4)">4</button>
+                                </div>
+
+                                <div class="pillar-content active" id="pillar1">
+                                    <h3 class="pillar-content-title">
+                                        <span>🏭</span>
+                                        <span>Agentic AI</span>
+                                    </h3>
+                                    <p class="pillar-content-desc">
+                                        This pillar focuses on autonomous AI agents that can make decisions, use tools, and complete complex tasks with minimal human intervention. Essential for building intelligent automation systems that can adapt and respond to changing conditions in real-time.
+                                    </p>
+                                </div>
+
+                                <div class="pillar-content" id="pillar2">
+                                    <h3 class="pillar-content-title">
+                                        <span>⚡</span>
+                                        <span>High-Performance Inference</span>
+                                    </h3>
+                                    <p class="pillar-content-desc">
+                                        This pillar emphasizes optimized model serving with techniques like vLLM for maximum throughput and minimal latency. Critical for production deployments at scale, ensuring your AI applications can handle enterprise workloads efficiently.
+                                    </p>
+                                </div>
+
+                                <div class="pillar-content" id="pillar3">
+                                    <h3 class="pillar-content-title">
+                                        <span>🎭</span>
+                                        <span>Synthetic Data Generation</span>
+                                    </h3>
+                                    <p class="pillar-content-desc">
+                                        This pillar covers AI-generated training data that preserves privacy, reduces costs, and enables model fine-tuning without exposing sensitive information. Perfect for organizations that need to train models while maintaining strict data governance and compliance requirements.
+                                    </p>
+                                </div>
+
+                                <div class="pillar-content" id="pillar4">
+                                    <h3 class="pillar-content-title">
+                                        <span>🌐</span>
+                                        <span>Distributed LLM Deployment</span>
+                                    </h3>
+                                    <p class="pillar-content-desc">
+                                        This pillar addresses scaling language models across clusters with load balancing, auto-scaling, and fault tolerance for enterprise-grade reliability. Build resilient AI infrastructure that can grow with your needs and handle millions of requests.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <p class="hero-subtitle">
                     Interactive demonstrations showcasing the four fundamental pillars of modern AI infrastructure: Agentic AI, High-Performance Inference, Synthetic Data, and Distributed LLM Deployment.
                 </p>
@@ -610,6 +800,43 @@
     </footer>
 
     <script>
+        // Toggle dropdown
+        function togglePillarsDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('pillarsDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('pillarsDropdown');
+            const container = document.querySelector('.pillars-info-container');
+            if (dropdown && container && !container.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // Switch between pillar tabs
+        function showPillar(pillarNum) {
+            event.stopPropagation(); // Prevent dropdown from closing
+
+            // Hide all content
+            document.querySelectorAll('.pillar-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Deactivate all tabs
+            document.querySelectorAll('.pillar-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected content
+            document.getElementById(`pillar${pillarNum}`).classList.add('active');
+
+            // Activate selected tab
+            document.querySelectorAll('.pillar-tab')[pillarNum - 1].classList.add('active');
+        }
+
         function launchDemo(namespace) {
             // Use Red Hat short links for traffic tracking
             const routes = {
