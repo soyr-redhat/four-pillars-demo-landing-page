@@ -594,16 +594,6 @@
 
                                 <div class="pillar-content active" id="pillar1">
                                     <h3 class="pillar-content-title">
-                                        <span>🏭</span>
-                                        <span>Agentic AI</span>
-                                    </h3>
-                                    <p class="pillar-content-desc">
-                                        This pillar focuses on autonomous AI agents that can make decisions, use tools, and complete complex tasks with minimal human intervention. Essential for building intelligent automation systems that can adapt and respond to changing conditions in real-time.
-                                    </p>
-                                </div>
-
-                                <div class="pillar-content" id="pillar2">
-                                    <h3 class="pillar-content-title">
                                         <span>⚡</span>
                                         <span>High-Performance Inference</span>
                                     </h3>
@@ -612,13 +602,23 @@
                                     </p>
                                 </div>
 
-                                <div class="pillar-content" id="pillar3">
+                                <div class="pillar-content" id="pillar2">
                                     <h3 class="pillar-content-title">
                                         <span>🎭</span>
                                         <span>Synthetic Data Generation</span>
                                     </h3>
                                     <p class="pillar-content-desc">
                                         This pillar covers AI-generated training data that preserves privacy, reduces costs, and enables model fine-tuning without exposing sensitive information. Perfect for organizations that need to train models while maintaining strict data governance and compliance requirements.
+                                    </p>
+                                </div>
+
+                                <div class="pillar-content" id="pillar3">
+                                    <h3 class="pillar-content-title">
+                                        <span>🏭</span>
+                                        <span>Agentic AI</span>
+                                    </h3>
+                                    <p class="pillar-content-desc">
+                                        This pillar focuses on autonomous AI agents that can make decisions, use tools, and complete complex tasks with minimal human intervention. Essential for building intelligent automation systems that can adapt and respond to changing conditions in real-time.
                                     </p>
                                 </div>
 
@@ -637,7 +637,7 @@
                 </div>
 
                 <p class="hero-subtitle">
-                    Interactive demonstrations showcasing the four fundamental pillars of modern AI infrastructure: Agentic AI, High-Performance Inference, Synthetic Data, and Distributed LLM Deployment.
+                    Interactive demonstrations showcasing the four fundamental pillars of modern AI infrastructure: High-Performance Inference, Synthetic Data, Agentic AI, and Distributed LLM Deployment.
                 </p>
                 <div class="hero-meta">
                     <div class="meta-item">
@@ -657,33 +657,14 @@
         <section class="demos">
             <div class="container">
                 <div class="demo-grid">
-                    <!-- Demo 1: Factory Floor Tycoon -->
-                    <div class="demo-card" onclick="launchDemo('factory-floor-tycoon')">
-                        <div class="card-header">
-                            <div class="card-icon">🏭</div>
-                            <span class="status-badge active">ACTIVE</span>
-                        </div>
-                        <div class="card-body">
-                            <div class="card-pillar">Pillar 01 / Agentic AI</div>
-                            <h3 class="card-title">Factory Floor Tycoon</h3>
-                            <p class="card-description">
-                                Program and deploy autonomous AI agents that compete in a simulated factory environment. Test different strategies, watch agents make real-time decisions, and optimize for maximum efficiency.
-                            </p>
-                            <div class="card-footer">
-                                <span class="card-meta">NAMESPACE: factory-floor-tycoon</span>
-                                <button class="launch-btn">Launch Demo</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Demo 2: Speed Showdown -->
+                    <!-- Demo 1: Speed Showdown -->
                     <div class="demo-card" onclick="launchDemo('speed-showdown')">
                         <div class="card-header">
                             <div class="card-icon">⚡</div>
                             <span class="status-badge active">ACTIVE</span>
                         </div>
                         <div class="card-body">
-                            <div class="card-pillar">Pillar 02 / Inference Performance</div>
+                            <div class="card-pillar">Pillar 01 / Inference Performance</div>
                             <h3 class="card-title">Speed Showdown</h3>
                             <p class="card-description">
                                 Experience the dramatic performance difference between standard inference and vLLM-optimized deployment. Race identical prompts side-by-side and see real-time token generation metrics.
@@ -695,14 +676,14 @@
                         </div>
                     </div>
 
-                    <!-- Demo 3: Real or Fake -->
+                    <!-- Demo 2: Real or Fake -->
                     <div class="demo-card disabled">
                         <div class="card-header">
                             <div class="card-icon">🎭</div>
                             <span class="status-badge coming-soon">COMING SOON</span>
                         </div>
                         <div class="card-body">
-                            <div class="card-pillar">Pillar 03 / Synthetic Data</div>
+                            <div class="card-pillar">Pillar 02 / Synthetic Data</div>
                             <h3 class="card-title">Real or Fake?</h3>
                             <p class="card-description">
                                 Challenge your perception in this data detective game. Distinguish between real and AI-generated synthetic data across multiple domains: reviews, code, profiles, and more.
@@ -710,6 +691,25 @@
                             <div class="card-footer">
                                 <span class="card-meta">STATUS: IN DEVELOPMENT</span>
                                 <button class="launch-btn" disabled>Coming Soon</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Demo 3: Factory Floor Tycoon -->
+                    <div class="demo-card" onclick="launchDemo('factory-floor-tycoon')">
+                        <div class="card-header">
+                            <div class="card-icon">🏭</div>
+                            <span class="status-badge active">ACTIVE</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-pillar">Pillar 03 / Agentic AI</div>
+                            <h3 class="card-title">Factory Floor Tycoon</h3>
+                            <p class="card-description">
+                                Program and deploy autonomous AI agents that compete in a simulated factory environment. Test different strategies, watch agents make real-time decisions, and optimize for maximum efficiency.
+                            </p>
+                            <div class="card-footer">
+                                <span class="card-meta">NAMESPACE: factory-floor-tycoon</span>
+                                <button class="launch-btn">Launch Demo</button>
                             </div>
                         </div>
                     </div>
