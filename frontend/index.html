@@ -642,10 +642,10 @@
                 <div class="hero-meta">
                     <div class="meta-item">
                         <span class="status-dot"></span>
-                        <span>2 ACTIVE</span>
+                        <span>3 ACTIVE</span>
                     </div>
                     <div class="meta-item">
-                        <span>2 COMING SOON</span>
+                        <span>1 COMING SOON</span>
                     </div>
                     <div class="meta-item">
                         <span>OPENSHIFT READY</span>
@@ -677,10 +677,10 @@
                     </div>
 
                     <!-- Demo 2: Real or Fake -->
-                    <div class="demo-card disabled">
+                    <div class="demo-card" onclick="launchDemo('real-or-fake')">
                         <div class="card-header">
                             <div class="card-icon">🎭</div>
-                            <span class="status-badge coming-soon">COMING SOON</span>
+                            <span class="status-badge active">ACTIVE</span>
                         </div>
                         <div class="card-body">
                             <div class="card-pillar">Pillar 02 / Synthetic Data</div>
@@ -689,8 +689,8 @@
                                 Challenge your perception in this data detective game. Distinguish between real and AI-generated synthetic data across multiple domains: reviews, code, profiles, and more.
                             </p>
                             <div class="card-footer">
-                                <span class="card-meta">STATUS: IN DEVELOPMENT</span>
-                                <button class="launch-btn" disabled>Coming Soon</button>
+                                <span class="card-meta">NAMESPACE: real-or-fake</span>
+                                <button class="launch-btn">Launch Demo</button>
                             </div>
                         </div>
                     </div>
@@ -795,7 +795,8 @@
             // Use Red Hat short links for traffic tracking
             const routes = {
                 'factory-floor-tycoon': 'https://red.ht/factory-floor',
-                'speed-showdown': 'https://red.ht/speed-showdown'
+                'speed-showdown': 'https://red.ht/speed-showdown',
+                'real-or-fake': 'https://red.ht/real-or-fake'
             };
 
             if (routes[namespace]) {
@@ -805,8 +806,8 @@
 
         // Add keyboard navigation
         document.addEventListener('keydown', (e) => {
-            if (e.key >= '1' && e.key <= '2') {
-                const demos = ['factory-floor-tycoon', 'speed-showdown'];
+            if (e.key >= '1' && e.key <= '3') {
+                const demos = ['speed-showdown', 'real-or-fake', 'factory-floor-tycoon'];
                 launchDemo(demos[parseInt(e.key) - 1]);
             }
         });
