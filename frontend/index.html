@@ -903,15 +903,17 @@
             html.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
 
-            // Update button text/icon
+            // Update button text/icon to show what mode you'll switch TO
             const themeIcon = document.getElementById('theme-icon');
             const themeText = document.getElementById('theme-text');
             if (newTheme === 'light') {
-                themeIcon.textContent = '☀';
-                themeText.textContent = 'Light Mode';
-            } else {
+                // Currently in light, show dark mode option
                 themeIcon.textContent = '☾';
                 themeText.textContent = 'Dark Mode';
+            } else {
+                // Currently in dark, show light mode option
+                themeIcon.textContent = '☀';
+                themeText.textContent = 'Light Mode';
             }
         }
 
@@ -923,11 +925,13 @@
             const themeIcon = document.getElementById('theme-icon');
             const themeText = document.getElementById('theme-text');
             if (savedTheme === 'light') {
-                themeIcon.textContent = '☀';
-                themeText.textContent = 'Light Mode';
-            } else {
+                // Currently in light, show dark mode option
                 themeIcon.textContent = '☾';
                 themeText.textContent = 'Dark Mode';
+            } else {
+                // Currently in dark, show light mode option
+                themeIcon.textContent = '☀';
+                themeText.textContent = 'Light Mode';
             }
         })();
     </script>
