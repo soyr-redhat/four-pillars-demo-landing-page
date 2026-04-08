@@ -22,6 +22,18 @@
             --text-tertiary: #6B6B6B;
         }
 
+        /* Light mode colors */
+        [data-theme="light"] {
+            --dark-bg: #F5F5F5;
+            --dark-surface: #FFFFFF;
+            --dark-elevated: #FAFAFA;
+            --grid-line: rgba(238, 0, 0, 0.1);
+            --grid-line-bright: rgba(238, 0, 0, 0.3);
+            --text-primary: #1A1A1A;
+            --text-secondary: #4A4A4A;
+            --text-tertiary: #8A8A8A;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -398,6 +410,30 @@
             color: var(--red-primary);
         }
 
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: var(--dark-elevated);
+            border: 1px solid var(--grid-line-bright);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-toggle:hover {
+            background: var(--red-primary);
+            border-color: var(--red-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
         /* Animations */
         @keyframes slideInUp {
             from {
@@ -560,11 +596,17 @@
 
     <header>
         <div class="container">
-            <div class="logo-area">
-                <div class="logo-mark"></div>
-                <div>
-                    <div class="system-id">SYSTEM_ID: RHAI_DEMO_PORTAL</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="logo-area">
+                    <div class="logo-mark"></div>
+                    <div>
+                        <div class="system-id">SYSTEM_ID: RHAI_DEMO_PORTAL</div>
+                    </div>
                 </div>
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <span id="theme-icon">◐</span>
+                    <span id="theme-text">Toggle Theme</span>
+                </button>
             </div>
         </div>
     </header>
@@ -847,6 +889,43 @@
                 document.body.removeChild(particle);
             }, 500);
         }
+
+        // Theme toggle functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+
+            // Update button text/icon
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            if (newTheme === 'light') {
+                themeIcon.textContent = '☀';
+                themeText.textContent = 'Light Mode';
+            } else {
+                themeIcon.textContent = '☾';
+                themeText.textContent = 'Dark Mode';
+            }
+        }
+
+        // Load saved theme on page load
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            if (savedTheme === 'light') {
+                themeIcon.textContent = '☀';
+                themeText.textContent = 'Light Mode';
+            } else {
+                themeIcon.textContent = '☾';
+                themeText.textContent = 'Dark Mode';
+            }
+        })();
     </script>
 </body>
 </html>
