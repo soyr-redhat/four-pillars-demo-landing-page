@@ -362,6 +362,30 @@
             color: var(--text-tertiary);
         }
 
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding: 2rem 0 1rem;
+        }
+
+        .section-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-tertiary);
+            white-space: nowrap;
+        }
+
+        .section-divider {
+            flex: 1;
+            height: 1px;
+            background: var(--grid-line-bright);
+        }
+
         /* Footer */
         footer {
             border-top: 1px solid var(--grid-line-bright);
@@ -703,6 +727,10 @@
 
         <section class="demos">
             <div class="container">
+                <div class="section-header">
+                    <span class="section-title">Demos</span>
+                    <div class="section-divider"></div>
+                </div>
                 <div class="demo-grid">
                     <!-- Demo 1: Speed Showdown -->
                     <div class="demo-card" onclick="launchDemo('speed-showdown')">
@@ -780,6 +808,35 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Minigames Section -->
+                <div class="section-header" style="margin-top: 3rem;">
+                    <span class="section-title">More Demos &amp; Minigames</span>
+                    <div class="section-divider"></div>
+                </div>
+
+                <div class="demo-grid">
+
+                    <!-- Inference Optimization Minigames -->
+                    <div class="demo-card" onclick="window.open('/minigames/', '_blank')">
+                        <div class="card-header">
+                            <div class="card-icon">🎮</div>
+                            <span class="status-badge active">ACTIVE</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-pillar">7 Minigames · Inference Performance</div>
+                            <h3 class="card-title">Inference Optimization Minigames</h3>
+                            <p class="card-description">
+                                Bake, guess, and speed-type your way through seven minigames that bring core inference optimization techniques to life. Explore the attached Red Hat resources to learn more.
+                            </p>
+                            <div class="card-footer">
+                                <span class="card-meta">vLLM · PagedAttention · RH AI</span>
+                                <button class="launch-btn">Launch</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </section>
     </main>
@@ -836,6 +893,10 @@
 
             // Activate selected tab
             document.querySelectorAll('.pillar-tab')[pillarNum - 1].classList.add('active');
+        }
+
+        function launchMinigame(slug) {
+            window.location.href = '/minigames/demos/' + slug;
         }
 
         function launchDemo(namespace) {

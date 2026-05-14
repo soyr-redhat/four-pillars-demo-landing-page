@@ -1,0 +1,204 @@
+/* Tutorial intro overlay — theme accents mirror each demo page */
+.tutorial-overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(18, 18, 22, 0.52);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: tutorial-fade-in 0.28s ease;
+}
+
+@keyframes tutorial-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.tutorial-overlay-card {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  max-height: min(88vh, 720px);
+  overflow-y: auto;
+  background: var(--white, #fff);
+  border-radius: 16px;
+  border: 1.5px solid var(--t-ac-border, #e0e0e0);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+  padding: 0 0 20px;
+  animation: tutorial-card-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes tutorial-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.tutorial-overlay-accent-bar {
+  height: 5px;
+  border-radius: 16px 16px 0 0;
+  background: var(--t-ac, #ee0000);
+}
+
+.tutorial-overlay-card h2 {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--ink, #1a1a1a);
+  margin: 0;
+  padding: 22px 26px 12px;
+  line-height: 1.25;
+}
+
+.tutorial-overlay-steps {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0 26px 14px;
+}
+
+.tutorial-overlay-steps li {
+  flex: 1;
+  min-width: 88px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  font-family: 'Red Hat Text', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--t-ac-text, #333);
+  line-height: 1.35;
+}
+
+.tutorial-step-ring {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--t-ac, #ee0000);
+  background: var(--t-ac-bg, #fff0f0);
+  border: 2px solid var(--t-ac-border, #ffbbbb);
+}
+
+.tutorial-overlay-body {
+  padding: 0 26px 18px;
+  font-family: 'Red Hat Text', sans-serif;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink-mid, #444);
+}
+
+.tutorial-overlay-body p {
+  margin: 0 0 12px;
+}
+
+.tutorial-overlay-body p:last-child {
+  margin-bottom: 0;
+}
+
+.tutorial-overlay-body strong {
+  color: var(--ink, #1a1a1a);
+  font-weight: 600;
+}
+
+.tutorial-overlay-continue {
+  display: block;
+  width: calc(100% - 52px);
+  margin: 8px 26px 0;
+  padding: 14px 22px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--t-ac, #ee0000);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease;
+}
+
+.tutorial-overlay-continue:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.tutorial-overlay-continue:active {
+  transform: translateY(0);
+}
+
+/* Theme tokens (match demo-shell / bakery / paged-attention) */
+[data-tutorial-theme='speculative'] {
+  --t-ac: #ee0000;
+  --t-ac-bg: #fff0f0;
+  --t-ac-text: #bb0000;
+  --t-ac-border: #ffbbbb;
+}
+
+[data-tutorial-theme='quantization'] {
+  --t-ac: #0066cc;
+  --t-ac-bg: #eef5ff;
+  --t-ac-text: #004499;
+  --t-ac-border: #b5d4f4;
+}
+
+[data-tutorial-theme='sparsification'] {
+  --t-ac: #008f73;
+  --t-ac-bg: #eefaf5;
+  --t-ac-text: #085041;
+  --t-ac-border: #9fe1cb;
+}
+
+[data-tutorial-theme='prefill-decode'] {
+  --t-ac: #c47800;
+  --t-ac-bg: #fff8ec;
+  --t-ac-text: #8a5200;
+  --t-ac-border: #fac775;
+}
+
+[data-tutorial-theme='prefix-caching'] {
+  --t-ac: #6b4ebb;
+  --t-ac-bg: #f4f2fe;
+  --t-ac-text: #4a3399;
+  --t-ac-border: #cecbf6;
+}
+
+[data-tutorial-theme='continuous-batching'] {
+  --t-ac: #4fa8c7;
+  --t-ac-bg: #ebf6fb;
+  --t-ac-text: #1a5f78;
+  --t-ac-border: #9dd5e8;
+}
+
+[data-tutorial-theme='paged-attention'] {
+  --t-ac: #c2185b;
+  --t-ac-bg: #fce4ec;
+  --t-ac-text: #880e4f;
+  --t-ac-border: #f48fb1;
+}

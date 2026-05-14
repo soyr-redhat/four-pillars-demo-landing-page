@@ -1,0 +1,1561 @@
+/* Continuous Bakery demo — scoped to avoid clashing with home / other demos */
+.bakery-page {
+  --red: #ee0000;
+  --red-light: #fff0f0;
+  --red-border: #ffbbbb;
+  --page-bg: #fafaf8;
+  --white: #ffffff;
+  --ink: #1a1a1a;
+  --ink-mid: #555;
+  --ink-light: #999;
+  --border: #e8e6e0;
+  --ac: #4fa8c7;
+  --ac-bg: #ebf6fb;
+  --ac-text: #1a5f78;
+  --ac-border: #9dd5e8;
+  --green: #1a7a3a;
+  --green-bg: #f0faf3;
+  --green-border: #a8ddb8;
+  --amber: #c47800;
+  --amber-bg: #fff8ec;
+  --amber-border: #fac775;
+  --urgent: #d32f2f;
+  --urgent-bg: #ffebee;
+  --urgent-border: #ffcdd2;
+
+  background: var(--page-bg);
+  color: var(--ink);
+  font-family: 'Red Hat Text', sans-serif;
+  min-height: 100vh;
+  position: relative;
+  z-index: 0;
+}
+
+.bakery-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, #d0cec8 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bakery-page *,
+.bakery-page *::before,
+.bakery-page *::after {
+  box-sizing: border-box;
+}
+
+.bakery-page nav {
+  position: relative;
+  z-index: 10;
+  background: var(--white);
+  border-bottom: 2.5px solid var(--ac);
+  padding: 0 32px;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bakery-page .nav-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--ink-mid);
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  transition: color 0.15s;
+}
+
+.bakery-page .nav-back:hover {
+  color: var(--ac);
+}
+
+.bakery-page .nav-back svg {
+  width: 16px;
+  height: 16px;
+}
+
+.bakery-page .nav-title {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.bakery-page .nav-badge {
+  background: var(--ac-bg);
+  border: 1.5px solid var(--ac-border);
+  color: var(--ac);
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.bakery-page .bakery-hero {
+  position: relative;
+  z-index: 5;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 36px 32px 20px;
+}
+
+.bakery-page .eyebrow {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ac);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bakery-page .eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ac);
+  animation: bakery-pulse 2s ease-in-out infinite;
+}
+
+@keyframes bakery-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.6);
+  }
+}
+
+.bakery-page .bakery-hero h1 {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: clamp(22px, 3vw, 36px);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.bakery-page .bakery-hero h1 strong {
+  font-weight: 700;
+  color: var(--ac);
+}
+
+.bakery-page .hero-sub {
+  font-size: 13px;
+  color: var(--ink-mid);
+  line-height: 1.7;
+  max-width: 700px;
+}
+
+.bakery-page .arena {
+  position: relative;
+  z-index: 5;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px 48px;
+}
+
+.bakery-page .top-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.bakery-page .mode-toggle {
+  display: flex;
+  background: #f0eee8;
+  border-radius: 10px;
+  padding: 3px;
+  gap: 3px;
+}
+
+.bakery-page .mode-btn {
+  padding: 7px 16px;
+  border-radius: 7px;
+  border: none;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  cursor: pointer;
+  background: transparent;
+  color: var(--ink-light);
+  transition: all 0.15s;
+  font-weight: 500;
+}
+
+.bakery-page .mode-btn.active {
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.bakery-page .mode-desc {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+  padding: 5px 10px;
+  background: #f9f8f5;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+}
+
+.bakery-page .speed-toggle {
+  display: flex;
+  background: #f0eee8;
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.bakery-page .speed-btn {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  cursor: pointer;
+  background: transparent;
+  color: var(--ink-light);
+  transition: all 0.15s;
+}
+
+.bakery-page .speed-btn.active {
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.bakery-page .stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.bakery-page .sc2 {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.bakery-page .sc2 .sv {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.bakery-page .stats-metric-hint {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-light);
+  margin-top: 4px;
+  line-height: 1.25;
+  font-weight: 400;
+}
+
+.bakery-page .sc2 .sl {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+}
+
+.bakery-page .sc2.good .sv {
+  color: var(--green);
+}
+
+.bakery-page .sc2.warn .sv {
+  color: var(--amber);
+}
+
+.bakery-page .sc2.bad .sv {
+  color: var(--urgent);
+}
+
+.bakery-page .sc2.ac .sv {
+  color: var(--ac);
+}
+
+.bakery-page .ug {
+  height: 6px;
+  background: #f0eee8;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.bakery-page .uf {
+  height: 100%;
+  border-radius: 3px;
+  transition:
+    width 0.3s,
+    background 0.3s;
+  background: var(--urgent);
+}
+
+.bakery-page .uf.mid {
+  background: var(--amber);
+}
+
+.bakery-page .uf.good {
+  background: var(--green);
+}
+
+.bakery-page .main-cols {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.bakery-page .left-col,
+.bakery-page .right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bakery-page .sc {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.bakery-page .slabel {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.bakery-page .badge {
+  padding: 2px 7px;
+  border-radius: 100px;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.bakery-page .badge-ac {
+  background: var(--ac-bg);
+  color: var(--ac);
+  border: 1px solid var(--ac-border);
+}
+
+.bakery-page .badge-amber {
+  background: var(--amber-bg);
+  color: var(--amber);
+  border: 1px solid var(--amber-border);
+}
+
+.bakery-page .badge-green {
+  background: var(--green-bg);
+  color: var(--green);
+  border: 1px solid var(--green-border);
+}
+
+.bakery-page .badge-urgent {
+  background: var(--urgent-bg);
+  color: var(--urgent);
+  border: 1px solid var(--urgent-border);
+}
+
+.bakery-page .orders-board {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-height: 60px;
+  align-content: flex-start;
+  max-height: min(52vh, 420px);
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.bakery-page .order-card {
+  background: #f9f8f5;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 11px;
+  min-width: 120px;
+  max-width: 170px;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.bakery-page .order-card.urgent {
+  border-color: var(--urgent);
+  background: var(--urgent-bg);
+  animation: bakery-shake 0.4s ease;
+}
+
+@keyframes bakery-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+.bakery-page .order-card.complete {
+  border-color: var(--green);
+  background: var(--green-bg);
+}
+
+.bakery-page .order-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.bakery-page .order-id,
+.bakery-page .order-clock {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 8px;
+  color: var(--ink-light);
+  letter-spacing: 0.08em;
+}
+
+.bakery-page .order-clock.hot {
+  color: var(--urgent);
+  font-weight: 700;
+}
+
+.bakery-page .order-items-row {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+  margin-bottom: 7px;
+}
+
+.bakery-page .oi {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 6px;
+  border-radius: 20px;
+  font-size: 9px;
+  font-family: 'Red Hat Mono', monospace;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.bakery-page .oi.filled {
+  background: var(--green-bg);
+  border-color: var(--green-border);
+  color: var(--green);
+}
+
+.bakery-page .oi-e {
+  font-size: 12px;
+  line-height: 1;
+}
+
+.bakery-page .order-serve-btn {
+  width: 100%;
+  padding: 4px;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: #e8e6e0;
+  color: var(--ink-light);
+}
+
+.bakery-page .order-serve-btn.ready {
+  background: var(--green);
+  color: white;
+  animation: bakery-btn-pulse 1s ease-in-out infinite;
+}
+
+@keyframes bakery-btn-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.bakery-page .order-serve-btn:disabled {
+  cursor: default;
+}
+
+.bakery-page .orders-empty-msg {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-light);
+}
+
+.bakery-page .oven-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.bakery-page .rack {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  border-radius: 9px;
+  border: 1.5px solid var(--border);
+  background: #f9f8f5;
+  min-height: 54px;
+  transition: all 0.2s;
+}
+
+.bakery-page .rack.empty {
+  border-style: dashed;
+}
+
+.bakery-page .rack.baking {
+  border-color: var(--ac);
+  background: var(--ac-bg);
+}
+
+.bakery-page .rack.locked {
+  border-color: var(--amber);
+  background: var(--amber-bg);
+}
+
+.bakery-page .rack.ready {
+  border-color: var(--green);
+  background: var(--green-bg);
+  cursor: pointer;
+  animation: bakery-rack-glow 1s ease-in-out infinite;
+}
+
+@keyframes bakery-rack-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(26, 122, 58, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(26, 122, 58, 0);
+  }
+}
+
+.bakery-page .rack.ready:hover {
+  background: #c8efd4;
+  transform: translateY(-1px);
+}
+
+.bakery-page .rack-num {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-light);
+  width: 36px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.bakery-page .rack-emoji {
+  font-size: 22px;
+  line-height: 1;
+  flex-shrink: 0;
+  min-width: 28px;
+  text-align: center;
+}
+
+.bakery-page .rack.baking .rack-emoji {
+  animation: bakery-wobble 1.2s ease-in-out infinite;
+}
+
+.bakery-page .rack.ready .rack-emoji {
+  animation: bakery-bounce 0.8s ease-in-out infinite;
+}
+
+@keyframes bakery-wobble {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+
+@keyframes bakery-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.1);
+  }
+}
+
+.bakery-page .rack-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.bakery-page .rack-name {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.bakery-page .rack-sub {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-light);
+  margin-top: 1px;
+}
+
+.bakery-page .rack.ready .rack-name {
+  color: var(--green);
+}
+
+.bakery-page .rack.locked .rack-name {
+  color: var(--amber);
+}
+
+.bakery-page .rack-bar-wrap {
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.bakery-page .rack-bar-track {
+  height: 5px;
+  background: #e0ddd8;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.bakery-page .rack-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--ac);
+  transition: width 0.15s;
+}
+
+.bakery-page .rack.locked .rack-bar-fill {
+  background: var(--amber);
+}
+
+.bakery-page .rack.ready .rack-bar-fill {
+  background: var(--green);
+}
+
+.bakery-page .rack-bar-pct {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 8px;
+  color: var(--ink-light);
+  margin-top: 2px;
+  text-align: right;
+}
+
+.bakery-page .rack-tag {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 8px;
+  padding: 2px 7px;
+  border-radius: 100px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.bakery-page .tag-ready {
+  background: var(--green-bg);
+  color: var(--green);
+  border: 1px solid var(--green-border);
+  animation: bakery-tag-blink 0.9s ease-in-out infinite;
+}
+
+.bakery-page .tag-locked {
+  background: var(--amber-bg);
+  color: var(--amber);
+  border: 1px solid var(--amber-border);
+}
+
+@keyframes bakery-tag-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.bakery-page .takeout-btn {
+  width: 100%;
+  padding: 8px;
+  background: var(--green);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 8px;
+  display: none;
+}
+
+.bakery-page .takeout-btn:hover:not(:disabled) {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.bakery-page .takeout-btn:disabled {
+  background: #e0ddd8;
+  color: var(--ink-light);
+  cursor: not-allowed;
+}
+
+.bakery-page .takeout-btn.visible {
+  display: block;
+}
+
+.bakery-page .takeout-btn.pulse {
+  animation: bakery-btn-pulse 0.8s ease-in-out infinite;
+}
+
+.bakery-page .batch-builder {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bakery-page .batch-slots {
+  display: flex;
+  gap: 6px;
+}
+
+.bakery-page .batch-slot {
+  flex: 1;
+  height: 72px;
+  border: 2px dashed var(--border);
+  border-radius: 9px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: #f9f8f5;
+  transition: all 0.15s;
+  position: relative;
+  cursor: default;
+}
+
+.bakery-page .batch-slot.filled {
+  border-style: solid;
+  border-color: var(--ac);
+  background: var(--ac-bg);
+}
+
+.bakery-page .batch-slot.filled.needed {
+  border-color: var(--green);
+  background: var(--green-bg);
+}
+
+.bakery-page .batch-slot .bs-n {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 8px;
+  color: var(--ink-light);
+  position: absolute;
+  top: 4px;
+  left: 6px;
+}
+
+.bakery-page .batch-slot .bs-x {
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  font-size: 11px;
+  color: var(--ink-light);
+  cursor: pointer;
+  line-height: 1;
+  padding: 1px 2px;
+  border-radius: 3px;
+  border: none;
+  background: transparent;
+}
+
+.bakery-page .batch-slot .bs-x:hover {
+  color: var(--urgent);
+  background: var(--urgent-bg);
+}
+
+.bakery-page .batch-slot .bs-e {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.bakery-page .batch-slot .bs-name {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 8px;
+  color: var(--ink-light);
+  text-align: center;
+}
+
+.bakery-page .batch-slot.empty .bs-plus {
+  font-size: 20px;
+  color: var(--border);
+}
+
+.bakery-page .batch-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.bakery-page .fire-btn {
+  flex: 1;
+  padding: 9px;
+  background: var(--ac);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.bakery-page .fire-btn:hover:not(:disabled) {
+  background: var(--ac-text);
+  transform: translateY(-1px);
+}
+
+.bakery-page .fire-btn:disabled {
+  background: #e0ddd8;
+  color: var(--ink-light);
+  cursor: not-allowed;
+}
+
+.bakery-page .fire-btn.full {
+  animation: bakery-fire-glow 1s ease-in-out infinite;
+}
+
+@keyframes bakery-fire-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(79, 168, 199, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(79, 168, 199, 0);
+  }
+}
+
+.bakery-page .clear-btn {
+  padding: 8px 12px;
+  background: var(--white);
+  color: var(--ink-light);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.bakery-page .clear-btn:hover {
+  border-color: var(--urgent);
+  color: var(--urgent);
+}
+
+.bakery-page .batch-hint {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-mid);
+  line-height: 1.5;
+}
+
+.bakery-page .batch-hint.warn {
+  color: var(--amber);
+}
+
+.bakery-page .needed-pills {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.bakery-page .needed-pill {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  background: var(--green-bg);
+  border: 1px solid var(--green-border);
+  border-radius: 20px;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 9px;
+  color: var(--green);
+}
+
+.bakery-page .picker-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+}
+
+.bakery-page .picker-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 7px 4px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  background: #f9f8f5;
+  transition: all 0.12s;
+  user-select: none;
+}
+
+.bakery-page .picker-item:hover:not(.disabled) {
+  border-color: var(--ac);
+  background: var(--ac-bg);
+  transform: translateY(-2px);
+}
+
+.bakery-page .picker-item:active:not(.disabled) {
+  transform: scale(0.94);
+}
+
+.bakery-page .picker-item.needed {
+  border-color: var(--green-border);
+  background: var(--green-bg);
+}
+
+.bakery-page .picker-item.needed:hover:not(.disabled) {
+  border-color: var(--ac);
+  background: var(--ac-bg);
+}
+
+.bakery-page .picker-item.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.bakery-page .picker-emoji {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.bakery-page .picker-name {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 7px;
+  color: var(--ink-light);
+  text-align: center;
+}
+
+.bakery-page .picker-ticks {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 7px;
+  color: var(--ink-light);
+}
+
+.bakery-page .overflow-row {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  min-height: 36px;
+  align-content: flex-start;
+}
+
+.bakery-page .overflow-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 5px 8px;
+  border: 1.5px solid var(--amber-border);
+  border-radius: 8px;
+  background: var(--amber-bg);
+  cursor: pointer;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 8px;
+  color: var(--amber);
+  transition: all 0.15s;
+}
+
+.bakery-page .overflow-chip:hover {
+  background: #ffe7b0;
+}
+
+.bakery-page .overflow-emoji {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.bakery-page .overflow-empty {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+}
+
+.bakery-page .served-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.bakery-page .served-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: var(--green-bg);
+  border: 1.5px solid var(--green-border);
+  border-radius: 8px;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--green);
+  animation: bakery-slide-in 0.3s ease;
+  flex-shrink: 0;
+}
+
+@keyframes bakery-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.bakery-page .served-empty {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+}
+
+.bakery-page .insight {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  margin-bottom: 10px;
+  transition: all 0.3s;
+}
+
+.bakery-page .insight.hi {
+  border-color: var(--ac-border);
+  background: var(--ac-bg);
+}
+
+.bakery-page .insight.warn {
+  border-color: var(--amber-border);
+  background: var(--amber-bg);
+}
+
+.bakery-page .insight.bad {
+  border-color: var(--urgent-border);
+  background: var(--urgent-bg);
+}
+
+.bakery-page .insight h4 {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+.bakery-page .insight.hi h4 {
+  color: var(--ac-text);
+}
+
+.bakery-page .insight.warn h4 {
+  color: var(--amber);
+}
+
+.bakery-page .insight.bad h4 {
+  color: var(--urgent);
+}
+
+.bakery-page .insight p {
+  font-size: 11px;
+  color: var(--ink-mid);
+  line-height: 1.6;
+}
+
+.bakery-page .run-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.bakery-page .run-btn {
+  flex: 1;
+  padding: 11px;
+  background: var(--ac);
+  color: white;
+  border: none;
+  border-radius: 9px;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    opacity 0.15s;
+}
+
+.bakery-page .run-btn:hover:not(:disabled) {
+  background: var(--ac-text);
+}
+
+.bakery-page .run-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.bakery-page .reset-btn {
+  padding: 11px 18px;
+  background: var(--white);
+  color: var(--ink-mid);
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.bakery-page .reset-btn:hover {
+  border-color: var(--ink-mid);
+}
+
+.bakery-page .bakery-section {
+  position: relative;
+  z-index: 5;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px 48px;
+}
+
+.bakery-page .section-divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 28px;
+}
+
+.bakery-page .bakery-section h2 {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.bakery-page .eg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.bakery-page .ec {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.bakery-page .ec h3 {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.bakery-page .ec p {
+  font-size: 12px;
+  color: var(--ink-mid);
+  line-height: 1.65;
+}
+
+.bakery-page .rhs {
+  background: var(--red-light);
+  border: 1.5px solid var(--red-border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.bakery-page .rhs h3 {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #bb0000;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bakery-page .rhs p {
+  font-size: 12px;
+  color: var(--ink-mid);
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+.bakery-page .rhs-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.bakery-page .rhl {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--white);
+  border: 1.5px solid var(--red-border);
+  color: #bb0000;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 7px;
+  text-decoration: none;
+  transition: border-color 0.15s;
+}
+
+.bakery-page .rhl:hover {
+  border-color: var(--red);
+}
+
+.bakery-page .pr {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.bakery-page .pc {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  padding: 12px 14px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition:
+    border-color 0.15s,
+    transform 0.15s;
+}
+
+.bakery-page .pc:hover {
+  border-color: var(--ink-mid);
+  transform: translateY(-2px);
+}
+
+.bakery-page .pd {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ac);
+  flex-shrink: 0;
+}
+
+.bakery-page .pc .pn {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.bakery-page .pc .pp {
+  font-size: 10px;
+  color: var(--ink-light);
+  margin-top: 1px;
+}
+
+.bakery-page .upstream-label {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-light);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.bakery-page .overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: bakery-fade-in 0.3s ease;
+}
+
+@keyframes bakery-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.bakery-page .overlay-box {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 36px 40px;
+  max-width: 480px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  animation: bakery-box-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.bakery-page .overlay-box.overlay-box--compare {
+  max-width: 520px;
+}
+
+@keyframes bakery-box-in {
+  from {
+    opacity: 0;
+    transform: scale(0.82) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.bakery-page .overlay-emoji {
+  font-size: 52px;
+  margin-bottom: 12px;
+}
+
+.bakery-page .overlay-title {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.bakery-page .overlay-sub {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 12px;
+  color: var(--ink-light);
+  margin-bottom: 22px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.bakery-page .overlay-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.bakery-page .ov-stat {
+  background: #f9f8f5;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 10px;
+}
+
+.bakery-page .ov-stat .ov-v {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ac);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.bakery-page .ov-stat .ov-l {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+}
+
+.bakery-page .overlay-cta {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-mid);
+  margin-bottom: 20px;
+  line-height: 1.6;
+  padding: 10px 14px;
+  background: var(--ac-bg);
+  border-radius: 8px;
+  border: 1px solid var(--ac-border);
+}
+
+.bakery-page .overlay-btn {
+  display: inline-block;
+  padding: 12px 32px;
+  background: var(--ac);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin: 4px;
+}
+
+.bakery-page .overlay-btn:hover {
+  background: var(--ac-text);
+  transform: translateY(-1px);
+}
+
+.bakery-page .overlay-btn.secondary {
+  background: var(--white);
+  color: var(--ac);
+  border: 2px solid var(--ac-border);
+}
+
+.bakery-page .overlay-btn.secondary:hover {
+  background: var(--ac-bg);
+}
+
+.bakery-page .slabel-muted {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-light);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.bakery-page .bakery-compare-just {
+  font-size: 12px;
+  color: var(--ink-mid);
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.bakery-page .bakery-compare-table {
+  width: 100%;
+  margin-bottom: 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f9f8f5;
+}
+
+.bakery-page .bakery-compare-head,
+.bakery-page .bakery-compare-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  align-items: center;
+}
+
+.bakery-page .bakery-compare-head {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  background: var(--white);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.bakery-page .bakery-compare-head span:nth-child(2),
+.bakery-page .bakery-compare-head span:nth-child(3) {
+  text-align: center;
+}
+
+.bakery-page .bakery-compare-row {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--border);
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 12px;
+}
+
+.bakery-page .bakery-compare-row:last-child {
+  border-bottom: none;
+}
+
+.bakery-page .bakery-compare-label {
+  color: var(--ink-mid);
+  font-size: 11px;
+}
+
+.bakery-page .bakery-compare-cell {
+  text-align: center;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.bakery-page .bakery-compare-cell.better {
+  color: var(--green);
+  font-weight: 700;
+  background: var(--green-bg);
+  border-radius: 8px;
+  padding: 4px 6px;
+}
+
+.bakery-page .bakery-compare-legend {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-light);
+  margin-bottom: 16px;
+  line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+  .bakery-page .main-cols {
+    grid-template-columns: 1fr;
+  }
+}

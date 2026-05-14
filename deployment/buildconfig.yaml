@@ -23,7 +23,7 @@ spec:
     git:
       uri: https://github.com/yourusername/4_pillars_demos.git
       ref: main
-    contextDir: 0_landing_page/frontend
+    contextDir: .
   strategy:
     type: Docker
     dockerStrategy:

@@ -1,0 +1,1570 @@
+/* Speculative decoding */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  text-align: center;
+}
+.stat-card .val {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.stat-card .lbl {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+.stat-card.highlight .val {
+  color: var(--ac);
+}
+.stat-card.good .val {
+  color: var(--green);
+}
+.track-wrap {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+.track-title {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.model-row {
+  margin-bottom: 20px;
+}
+.model-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.model-name {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.model-stats {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 12px;
+  color: var(--ink-light);
+}
+.model-stats span {
+  color: var(--ink-mid);
+}
+.track {
+  height: 48px;
+  background: #f5f4f0;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.track-fill {
+  height: 100%;
+  border-radius: 8px;
+  transition: width 0.08s linear;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+.track-fill span {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: white;
+  white-space: nowrap;
+}
+.draft-fill {
+  background: var(--amber);
+}
+.main-fill {
+  background: #b0b0a8;
+}
+.combined-fill {
+  background: var(--ac);
+}
+.token-display {
+  background: #f5f4f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-top: 8px;
+  min-height: 36px;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  word-break: break-word;
+}
+.tok {
+  display: inline-block;
+  padding: 1px 3px;
+  border-radius: 3px;
+  margin: 1px;
+  transition: background 0.2s;
+}
+.tok-draft {
+  background: #faeeda;
+  color: #633806;
+}
+.tok-accepted {
+  background: #d4edda;
+  color: #1a5c30;
+}
+.tok-rejected {
+  background: #ffdddd;
+  color: #991111;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+.tok-final {
+  background: #e8e6ff;
+  color: #3c3489;
+}
+.log {
+  background: #f5f4f0;
+  border-radius: 10px;
+  padding: 16px;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  max-height: 180px;
+  overflow-y: auto;
+  color: var(--ink-mid);
+}
+.log-line {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+.log-time {
+  color: var(--ink-light);
+  flex-shrink: 0;
+  width: 50px;
+}
+.log-draft {
+  color: var(--amber);
+}
+.log-accept {
+  color: var(--green);
+}
+.log-reject {
+  color: var(--red);
+}
+.log-verify {
+  color: #6b4ebb;
+}
+
+/* Quantization */
+.quiz-progress {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 22px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.q-dots {
+  display: flex;
+  gap: 8px;
+}
+.q-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.2s;
+}
+.q-dot.done {
+  background: var(--green);
+}
+.q-dot.active {
+  background: var(--ac);
+}
+.q-dot.wrong {
+  background: var(--red);
+}
+.quiz-score-live {
+  margin-left: auto;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.quiz-score-live span {
+  color: var(--ac);
+}
+.quiz-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+.quiz-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.quiz-q-label {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-light);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.bits-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+.bits-badge {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: var(--ac-bg);
+  color: var(--ac-text);
+  border: 1px solid var(--ac-border);
+}
+.bits-bar-wrap {
+  flex: 1;
+  height: 8px;
+  background: #f0eee8;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.bits-bar {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--ac);
+  transition: width 0.6s ease;
+}
+.bits-label {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+  margin-top: 4px;
+}
+.canvas-row {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  margin: 24px 0;
+}
+.canvas-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+.canvas-label {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.canvas-wrap canvas {
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  display: block;
+  image-rendering: pixelated;
+}
+.canvas-wrap canvas.canvas-fp32 {
+  image-rendering: auto;
+}
+.slider-wrap {
+  margin: 0 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.slider-wrap label {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-mid);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.slider-val {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  min-width: 40px;
+  text-align: right;
+}
+.choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+.choice {
+  background: var(--page-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 18px;
+  cursor: pointer;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  text-align: left;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.choice:hover:not(:disabled) {
+  border-color: var(--ac);
+  background: var(--ac-bg);
+  color: var(--ac-text);
+}
+.choice.correct {
+  border-color: var(--green);
+  background: var(--green-bg);
+  color: var(--green);
+}
+.choice.wrong {
+  border-color: var(--red);
+  background: #fff0f0;
+  color: #991111;
+}
+.choice:disabled {
+  cursor: default;
+}
+.choice-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+}
+.feedback {
+  margin-top: 16px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  display: none;
+}
+.feedback.show {
+  display: block;
+}
+.feedback.correct {
+  background: var(--green-bg);
+  border: 1.5px solid var(--green-border);
+  color: var(--green);
+}
+.feedback.wrong {
+  background: #fff0f0;
+  border: 1.5px solid var(--red-border);
+  color: #991111;
+}
+.next-btn {
+  margin-top: 16px;
+  background: var(--ac);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 28px;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: none;
+  transition: background 0.15s;
+}
+.next-btn.show {
+  display: inline-block;
+}
+.next-btn:hover {
+  filter: brightness(0.92);
+}
+.results {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 36px;
+  text-align: center;
+  display: none;
+}
+.results.show {
+  display: block;
+}
+.results-score {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--ac);
+  line-height: 1;
+}
+.results-label {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 12px;
+  color: var(--ink-light);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+.results-msg {
+  font-size: 16px;
+  color: var(--ink-mid);
+  line-height: 1.7;
+  margin: 20px auto;
+  max-width: 500px;
+}
+.results-analogy {
+  background: var(--ac-bg);
+  border: 1.5px solid var(--ac-border);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 20px auto;
+  max-width: 520px;
+  font-size: 14px;
+  color: var(--ac-text);
+  line-height: 1.7;
+}
+.restart-btn {
+  background: var(--ac);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 16px;
+}
+.restart-btn:hover {
+  filter: brightness(0.92);
+}
+
+/* Sparsification */
+[data-demo-theme='sparsification'] {
+  --pruned: #e8e6e0;
+  --active: #008f73;
+  --strong: #005c47;
+}
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.metric {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+}
+.metric .v {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.metric .l {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-light);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+.metric.ac .v {
+  color: var(--ac);
+}
+.metric.am .v {
+  color: var(--amber);
+}
+.metric.gr .v {
+  color: var(--green);
+}
+.metric.rd .v {
+  color: var(--red);
+}
+.net-wrap {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.net-label {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.matrix-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.matrix-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+}
+.matrix-label {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.weight-grid {
+  display: grid;
+  gap: 2px;
+}
+.weight-cell {
+  height: 14px;
+  border-radius: 2px;
+  transition:
+    background 0.3s,
+    opacity 0.3s;
+}
+.acc-section {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin-bottom: 16px;
+}
+.acc-label {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.acc-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.acc-name {
+  font-size: 12px;
+  color: var(--ink-mid);
+  width: 100px;
+  flex-shrink: 0;
+}
+.acc-bar-wrap {
+  flex: 1;
+  height: 10px;
+  background: #f0eee8;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.acc-bar {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.5s ease;
+}
+.acc-val {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+  width: 48px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.btn-ghost {
+  background: var(--white);
+  color: var(--ink);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 22px;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-left: 8px;
+  white-space: nowrap;
+}
+.btn-ghost:hover {
+  background: var(--page-bg);
+}
+
+/* Prefill / decode */
+[data-demo-theme='prefill-decode'] {
+  --blue: #0066cc;
+  --blue-bg: #eef5ff;
+  --blue-border: #b5d4f4;
+}
+.mode-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--white);
+}
+.mode-tab {
+  flex: 1;
+  padding: 14px 20px;
+  background: none;
+  border: none;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-mid);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+  border-right: 1px solid var(--border);
+}
+.mode-tab:last-child {
+  border-right: none;
+}
+.mode-tab.active {
+  background: var(--ac);
+  color: white;
+  font-weight: 700;
+}
+.mode-tab:hover:not(.active) {
+  background: var(--ac-bg);
+  color: var(--ac-text);
+}
+.factory {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+.factory-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.factory-label {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-light);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.factory-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.workers-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.worker {
+  flex: 1;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  background: var(--page-bg);
+}
+.worker-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.worker-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.worker-name {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.worker-role {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+  letter-spacing: 0.08em;
+}
+.worker.busy {
+  border-color: var(--ac-border);
+  background: var(--ac-bg);
+}
+.worker.idle {
+  border-color: var(--green-border);
+  background: var(--green-bg);
+  opacity: 0.7;
+}
+.worker-task {
+  font-size: 12px;
+  color: var(--ink-mid);
+  line-height: 1.5;
+  min-height: 36px;
+}
+.worker-bar-wrap {
+  height: 6px;
+  background: #e8e6e0;
+  border-radius: 3px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+.worker-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.1s linear;
+}
+.prefill-bar {
+  background: var(--blue);
+}
+.decode-bar {
+  background: var(--green);
+}
+.combined-bar {
+  background: var(--ac);
+}
+.queue-wrap {
+  margin-bottom: 20px;
+}
+.queue-label {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.queue-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-height: 40px;
+  align-items: center;
+}
+.req-bubble {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-mid);
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.req-bubble.prefilling {
+  background: var(--blue-bg);
+  border-color: var(--blue-border);
+  color: var(--blue);
+}
+.req-bubble.decoding {
+  background: var(--green-bg);
+  border-color: var(--green-border);
+  color: var(--green);
+}
+.req-bubble.done {
+  background: #f0f0f0;
+  color: var(--ink-light);
+  text-decoration: line-through;
+}
+.prefill-page .metric .val {
+  font-size: 22px;
+}
+.timeline {
+  background: #f5f4f0;
+  border-radius: 10px;
+  padding: 16px;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-mid);
+  max-height: 160px;
+  overflow-y: auto;
+  line-height: 1.8;
+}
+.tl-prefill {
+  color: var(--blue);
+}
+.tl-decode {
+  color: var(--green);
+}
+.tl-done {
+  color: #1a7a3a;
+  font-weight: 500;
+}
+.comparison {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.comp-label {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.comp-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.comp-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  width: 90px;
+  flex-shrink: 0;
+}
+.comp-bar-wrap {
+  flex: 1;
+  height: 10px;
+  background: #f0eee8;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.comp-bar {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 1s ease;
+}
+.comp-val {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 12px;
+  color: var(--ink-mid);
+  width: 60px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Prefix caching */
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.game-stats-row {
+  display: flex;
+  gap: 12px;
+}
+.gstat {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  text-align: center;
+}
+.gstat .v {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.gstat .l {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-light);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.gstat.ac .v {
+  color: var(--ac);
+}
+.gstat.gr .v {
+  color: var(--green);
+}
+.gstat.am .v {
+  color: var(--amber);
+}
+.btn-start {
+  background: var(--ac);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-start:hover {
+  filter: brightness(0.92);
+}
+.phrase-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 16px;
+}
+.phrase-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.phrase-num {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-light);
+  letter-spacing: 0.12em;
+}
+.cache-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+}
+.cache-badge {
+  background: var(--ac-bg);
+  color: var(--ac-text);
+  border: 1px solid var(--ac-border);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+.cache-badge.miss {
+  background: #f5f4f0;
+  color: var(--ink-light);
+  border-color: var(--border);
+}
+.target-phrase {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
+  word-break: break-word;
+}
+.prefix-cached {
+  color: var(--ac);
+  background: var(--ac-bg);
+  border-radius: 3px;
+  padding: 1px 2px;
+}
+/** Shared prefix region on cache miss — visible family boundary before KV is stored */
+.prefix-region {
+  color: var(--ac-text);
+  background: rgba(107, 78, 187, 0.07);
+  border: 1px dashed var(--ac-border);
+  border-radius: 3px;
+  padding: 1px 2px;
+}
+.prefix-uncached {
+  color: var(--ink);
+}
+.type-area {
+  position: relative;
+}
+.type-input {
+  width: 100%;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 16px;
+  padding: 14px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: #fafaf8;
+  color: var(--ink);
+  outline: none;
+  letter-spacing: 0.02em;
+  transition: border-color 0.15s;
+}
+.type-input:focus {
+  border-color: var(--ac);
+  background: var(--white);
+}
+.type-input.correct {
+  border-color: var(--green);
+  background: var(--green-bg);
+}
+.type-input.error {
+  border-color: var(--red);
+  background: var(--red-light);
+}
+.type-input.error:focus {
+  border-color: var(--red);
+  background: var(--red-light);
+}
+.accuracy-bar-wrap {
+  height: 4px;
+  background: #f0eee8;
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.accuracy-bar {
+  height: 100%;
+  background: var(--ac);
+  border-radius: 2px;
+  transition: width 0.1s;
+}
+.cache-viewer {
+  background: var(--white);
+  border: 1.5px solid var(--ac-border);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin-bottom: 16px;
+}
+.cache-viewer-label {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ac);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.cache-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cache-slot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  background: var(--ac-bg);
+  border-radius: 6px;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ac-text);
+}
+.cache-slot-key {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--ac);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.cache-slot-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cache-slot-save {
+  color: var(--green);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.cache-slot-warming {
+  border: 1px dashed var(--ac-border);
+  background: rgba(107, 78, 187, 0.06);
+}
+.cache-slot-warming .cache-slot-key {
+  background: var(--ink-mid);
+  font-size: 9px;
+}
+.cache-slot-save.cache-slot-progress {
+  color: var(--ac);
+}
+.no-cache {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 12px;
+  color: var(--ink-light);
+  font-style: italic;
+}
+.timer-display {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--ac);
+  text-align: center;
+  margin: 8px 0;
+}
+.results-screen {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 40px;
+  text-align: center;
+  display: none;
+}
+.results-screen.show {
+  display: block;
+}
+.results-title {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.results-time {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 48px;
+  font-weight: 500;
+  color: var(--ac);
+  line-height: 1;
+  margin: 16px 0 4px;
+}
+.results-sublabel {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-light);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.results-breakdown {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin: 24px 0;
+  text-align: center;
+}
+.rb-card {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+}
+.rb-card .rv {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+}
+.rb-card .rl {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+.results-insight {
+  background: var(--ac-bg);
+  border: 1.5px solid var(--ac-border);
+  border-radius: 10px;
+  padding: 18px 22px;
+  font-size: 14px;
+  color: var(--ac-text);
+  line-height: 1.7;
+  margin: 16px 0;
+}
+.btn-play-again {
+  background: var(--ac);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 8px;
+}
+.btn-play-again:hover {
+  filter: brightness(0.92);
+}
+
+/* ─── Quantization: image upload error state ─────────────────────────────── */
+.load-error {
+  background: #fff8ec;
+  border: 1.5px solid var(--amber);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin: 16px 0;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 13px;
+  color: var(--ink-mid);
+  line-height: 1.7;
+}
+.load-error code {
+  background: rgba(0,0,0,0.06);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* ─── Sparsification: new interactive layout ─────────────────────────────── */
+.sparse-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+.sparse-metrics {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+.sparse-metric { text-align: center; }
+.sparse-val {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.sparse-lbl {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 3px;
+}
+.sparse-btn-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.quality-bar-wrap {
+  margin-bottom: 16px;
+}
+.quality-bar-track {
+  height: 10px;
+  background: #eee;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.quality-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+.quality-note {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-light);
+}
+.net-canvas-wrap {
+  position: relative;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  user-select: none;
+}
+.edge-tooltip {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--white);
+  border: 1.5px solid;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 12px;
+  color: var(--ink);
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.sparse-legend {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-light);
+}
+.legend-swatch {
+  width: 28px;
+  height: 6px;
+  border-radius: 3px;
+}
+
+/* ─── Prefill / Decode: side-by-side ─────────────────────────────────────── */
+.pd-global-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.pd-side-by-side {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  align-items: start;
+  margin-bottom: 20px;
+}
+@media (max-width: 720px) {
+  .pd-side-by-side { grid-template-columns: 1fr; }
+  .pd-vs { display: none; }
+}
+.pd-vs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-light);
+  letter-spacing: 0.1em;
+  padding-top: 80px;
+}
+.pd-panel {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.pd-panel-combined { border-color: #C8C4BC; }
+.pd-panel-disagg { border-color: var(--green); box-shadow: 0 0 0 1px rgba(0,143,115,0.12); }
+
+.pd-panel-header {}
+.pd-panel-title {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.pd-panel-subtitle {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-light);
+}
+.pd-stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.pd-stat {
+  background: #f8f7f4;
+  border-radius: 8px;
+  padding: 10px 8px;
+  text-align: center;
+}
+.pd-stat-val {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.pd-stat.highlight .pd-stat-val { color: var(--ac); }
+.pd-stat-lbl {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-top: 2px;
+}
+.pd-gpus { display: flex; flex-direction: column; gap: 10px; }
+.pd-gpu {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  transition: border-color 0.2s;
+}
+.pd-gpu-active { border-color: var(--green); }
+.pd-gpu-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.pd-gpu-avatar { font-size: 20px; line-height: 1; }
+.pd-gpu-name {
+  font-family: 'Red Hat Display', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.pd-gpu-role {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+}
+.pd-gpu-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #ccc;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.pd-gpu-dot-live { background: var(--green); box-shadow: 0 0 0 3px rgba(0,143,115,0.2); }
+.pd-gpu-task {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-mid);
+  margin-bottom: 6px;
+  min-height: 16px;
+}
+.pd-bar-wrap {
+  height: 6px;
+  background: #eee;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.pd-bar {
+  height: 100%;
+  border-radius: 99px;
+}
+.pd-bar-combined { background: var(--amber); }
+.pd-bar-prefill { background: var(--blue, #0066CC); }
+.pd-bar-decode { background: var(--green); }
+
+.pd-queue {}
+.pd-queue-label {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-light);
+  margin-bottom: 8px;
+}
+.pd-queue-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 32px;
+}
+.pd-queue-empty {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-light);
+}
+.pd-bubble {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+.pd-bubble-queued { background: #f0ede8; color: var(--ink-mid); }
+.pd-bubble-prefilling { background: #e8f0ff; color: #1a4a9f; }
+.pd-bubble-decoding { background: #e6f8f2; color: #006644; }
+.pd-bubble-done { background: #f0f0f0; color: #999; }
+
+.pd-breakdown {}
+.pd-breakdown-label {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-light);
+  margin-bottom: 8px;
+}
+.pd-breakdown-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+.pd-breakdown-name {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 11px;
+  width: 50px;
+  flex-shrink: 0;
+}
+.pd-breakdown-track {
+  flex: 1;
+  height: 6px;
+  background: #eee;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.pd-breakdown-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.15s linear;
+}
+.pd-breakdown-val {
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+  width: 28px;
+  text-align: right;
+}
+.pd-panel-controls {
+  display: flex;
+  gap: 8px;
+}
+.pd-live-verdict {
+  background: #f0faf5;
+  border: 1.5px solid var(--green);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-family: 'Red Hat Mono', monospace;
+  font-size: 12px;
+  color: var(--ink);
+  margin-bottom: 20px;
+}

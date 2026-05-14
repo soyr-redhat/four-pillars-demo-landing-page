@@ -1,0 +1,10 @@
+{
+  "name": "four-pillars-demo-landing-page",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm run build:minigames && node dev-server.mjs",
+    "build:minigames": "npm ci --prefix minigames && npm run build --prefix minigames",
+    "watch:minigames": "npm run build --prefix minigames -- --watch"
+  }
+}

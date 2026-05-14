@@ -1,0 +1,158 @@
+# Red Hat AI — Inference Optimization Demo Suite
+
+> Interactive demos explaining six LLM inference optimization techniques, built for engineers, practitioners, and anyone curious about how open-source AI infrastructure works.
+
+**Live site:** `https://your-username.github.io/your-repo-name/`
+
+---
+
+## What This Is
+
+A lightweight, zero-dependency web app that teaches LLM inference optimization through hands-on simulations. Each technique gets its own interactive demo — no slides, no walls of text. You learn by doing.
+
+| Demo | Technique | Format |
+|------|-----------|--------|
+| 01 | Speculative Decoding | Live race simulation |
+| 02 | Quantization + Compression | Pixel identification quiz |
+| 03 | Sparsification | Neural network pruning sandbox |
+| 04 | Prefill / Decode Disaggregation | Factory throughput simulation |
+| 05 | Continuous Batching + Prefix Caching | Speed typing challenge |
+| 06 | GuideLLM Benchmarking | *(coming soon)* |
+
+All six techniques are upstream open-source projects that Red Hat actively contributes to or maintains.
+
+---
+
+## The Demos
+
+### 01 · Speculative Decoding
+A slowed-down (1000×) simulation of draft-model speculation. A small draft model races ahead to guess tokens; the large model verifies them all in one pass. You control draft speed, speculation window, and acceptance rate — and watch the speedup accumulate in real time.
+
+**Why it matters:** 2–3× throughput improvement on code and structured-text workloads with zero change to output quality.
+
+### 02 · Quantization + Compression
+A six-question pixel art quiz. Images (Red Hat logo, Tux, Kubernetes wheel, etc.) are rendered at progressively lower bit depths — the same way model weights get compressed from FP32 to INT4. Guess what you're looking at. Your score reflects how much information you actually needed.
+
+**Why it matters:** INT4 quantization reduces model memory by 87.5%, putting 70B models within reach of a single GPU.
+
+### 03 · Sparsification
+An interactive neural network pruner. Drag a sparsity slider from 0% to 95% and watch neurons go dark as the weakest weights get zeroed out. Live benchmark scores (MMLU, HumanEval, GSM8K) update in real time showing how well accuracy holds.
+
+**Why it matters:** 50% sparse models can run at near-identical accuracy with 2× hardware throughput on NVIDIA Ampere/Hopper GPUs.
+
+### 04 · Prefill / Decode Disaggregation
+A factory simulation with two modes. In **Combined** mode, one GPU alternates between reading prompts and writing responses, starving itself. In **Disaggregated** mode, dedicated Prefill and Decode GPUs each run at full utilization. Watch TTFT and throughput diverge.
+
+**Why it matters:** P/D disaggregation reduces Time to First Token by 2–4× for long prompts and improves overall cluster utilization.
+
+### 05 · Continuous Batching + Prefix Caching
+A speed-typing challenge with six prompts per round drawn from a randomized pool. Some prompts share prefixes with ones you've already typed — when you hit a cache match, the shared part is pre-filled and you only type the new suffix. After each round you can play again with the same prefix cache or clear it for a cold start.
+
+**Why it matters:** Cache hit rates above 80% are common in production chatbot and RAG workloads, delivering 10–20× effective throughput gains.
+
+---
+
+## Upstream Projects
+
+| Project | Role | Maintainer |
+|---------|------|------------|
+| [vLLM](https://github.com/vllm-project/vllm) | Primary serving engine; speculative decoding, prefix caching, PagedAttention | Community (Red Hat contributor) |
+| [llm-compressor](https://github.com/vllm-project/llm-compressor) | Quantization + sparsification toolkit | Red Hat / Neural Magic |
+| [SparseML](https://github.com/neuralmagic/sparseml) | Sparsification and pruning framework | Red Hat / Neural Magic |
+| [LMCache](https://github.com/LMCache/LMCache) | Distributed KV cache sharing for P/D disaggregation | Community (Red Hat contributor) |
+| [SGLang](https://github.com/sgl-project/sglang) | High-performance serving with RadixAttention | Community |
+| [llama.cpp](https://github.com/ggml-org/llama.cpp) | CPU/edge inference with speculative decoding | Community |
+| [GuideLLM](https://github.com/neuralmagic/guidellm) | Benchmarking and evaluation framework | Red Hat / Neural Magic |
+| [Hugging Face TGI](https://github.com/huggingface/text-generation-inference) | Text generation inference server | Hugging Face |
+
+---
+
+## Repo Structure
+
+```
+/
+├── index.html              # Vite entry (mounts React)
+├── package.json
+├── vite.config.ts
+├── src/
+│   ├── main.tsx            # App bootstrap
+│   ├── App.tsx             # Routes
+│   ├── components/         # DemoNav, HatLogo, RhDocLink, …
+│   ├── pages/              # Home + one file per demo
+│   ├── data/               # Shared quiz / prompt datasets
+│   └── styles/             # global, home, demo-shell, demo-widgets
+└── README
+```
+
+The site is a **Vite + React** app (TypeScript). Shared layout styles live in `src/styles/`; shared UI pieces in `src/components/`; demo logic and datasets in `src/data/` where it made sense to deduplicate.
+
+---
+
+## Deploying to GitHub Pages
+
+1. Run `npm run build` — output is in `dist/`.
+2. Push this repo to GitHub and configure **Actions** or **Pages** to publish the `dist` folder (e.g. use a workflow that runs `npm ci && npm run build` and uploads `dist`, or deploy `dist` from a branch).
+3. Set `base` in `vite.config.ts` if the site is not served from the domain root (e.g. `base: '/your-repo-name/'`).
+
+---
+
+## Development
+
+```bash
+npm install
+npm run dev          # local dev server
+npm run build        # production bundle → dist/
+npm run preview      # preview the production build
+npm run typecheck    # TypeScript check (no emit)
+```
+
+To add a new demo: add a route in `src/App.tsx`, a page under `src/pages/`, optional data under `src/data/`, and a tile on `HomePage.tsx`. Reuse `DemoNav`, `RhDocLink`, `HatLogo`, and the CSS in `demo-shell.css` / `demo-widgets.css`.
+
+---
+
+## Design System
+
+All pages share:
+
+- **Fonts:** Red Hat Display, Red Hat Text, Red Hat Mono (Google Fonts)
+- **Color:** Red Hat red (`#EE0000`) as primary, with per-technique accent colors
+- **Background:** Warm off-white (`#FAFAF8`) + subtle dot grid
+- **No external JS dependencies** — all interactivity is vanilla JS
+
+Accent colors per technique: red (speculative), blue (quantization), teal (sparsification), amber (P/D disagg), purple (batching/caching), coral (benchmarking).
+
+---
+
+## Internal Notes
+
+> *This section is for Red Hat team members. Feel free to strip it before making the repo fully public.*
+
+### Links to fill in
+
+Every demo page has placeholder links marked `href="#"` or `(link TBD)` in the Red Hat section. Before launch, replace these with:
+
+- Red Hat AI product documentation URLs
+- Relevant Red Hat blog posts
+- Any internal landing pages or product pages
+
+Search for `link TBD` across all HTML files to find them all.
+
+### Demo 06 (GuideLLM)
+
+Tile 06 currently links to `#`. The plan is a live benchmarking visualization pulling from pre-run GuideLLM results across a set of models. Reach out to [fill in owner] to coordinate data format and hosting.
+
+### Content accuracy
+
+Stats in the hero (`6×`, `−70%`, `100%`) and benchmark numbers in the sparsification demo (MMLU, HumanEval, GSM8K degradation curves) are approximate and illustrative. If this site gets used in formal customer-facing materials, have an engineer review the numbers against current benchmarks.
+
+### Fonts and branding
+
+The demos use Red Hat's official font family (Red Hat Display, Text, Mono) which is open source and available via Google Fonts — no license issues for external hosting. The hat SVG in the header is a simplified geometric approximation, not the official Red Hat logo. Replace with the official SVG asset if needed for brand compliance.
+
+### Contributing
+
+PRs welcome. New demos should follow the same layout patterns (`DemoNav`, explainer + Red Hat + upstream sections) and reuse shared styles in `src/styles/` so the suite stays visually coherent.
+
+---
+
+*Built with Red Hat fonts · Powered by open source*

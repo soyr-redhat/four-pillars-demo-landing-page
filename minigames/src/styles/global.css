@@ -1,0 +1,63 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --red: #ee0000;
+  --red-light: #fff0f0;
+  --red-border: #ffbbbb;
+  --page-bg: #fafaf8;
+  --white: #ffffff;
+  --ink: #1a1a1a;
+  --ink-mid: #555;
+  --ink-light: #999;
+  --border: #e8e6e0;
+  --green: #1a7a3a;
+  --green-bg: #f0faf3;
+  --green-border: #a8ddb8;
+  --amber: #c47800;
+  --amber-bg: #fff8ec;
+  --amber-border: #fac775;
+  --ac: #ee0000;
+  --ac-bg: #fff0f0;
+  --ac-text: #bb0000;
+  --ac-border: #ffbbbb;
+}
+
+body {
+  background: var(--page-bg);
+  color: var(--ink);
+  font-family: 'Red Hat Text', sans-serif;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, #d0cec8 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+input,
+button,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
