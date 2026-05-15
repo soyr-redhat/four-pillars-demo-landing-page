@@ -40,15 +40,7 @@ export function ThemeToggle({ inline = false }: Props) {
     letterSpacing: '0.06em',
   };
 
-  const positionStyle = inline
-    ? {}
-    : {
-        position: 'absolute' as const,
-        top: '50%',
-        right: '56px',
-        transform: 'translateY(-50%)',
-        zIndex: 100,
-      };
+  const positionStyle = {};
 
   return (
     <button
