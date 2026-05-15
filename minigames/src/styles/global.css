@@ -28,6 +28,28 @@
   --ac-border: #ffbbbb;
 }
 
+[data-theme="dark"] {
+  --red: #ee0000;
+  --red-light: #2a0000;
+  --red-border: #5a0000;
+  --page-bg: #0f0f0f;
+  --white: #1a1a1a;
+  --ink: #e8e8e8;
+  --ink-mid: #aaa;
+  --ink-light: #666;
+  --border: #2a2a2a;
+  --green: #2a9a4a;
+  --green-bg: #0f1a13;
+  --green-border: #1a3a2a;
+  --amber: #faa000;
+  --amber-bg: #1a1408;
+  --amber-border: #3a2a08;
+  --ac: #ee0000;
+  --ac-bg: #2a0000;
+  --ac-text: #ff4444;
+  --ac-border: #5a0000;
+}
+
 body {
   background: var(--page-bg);
   color: var(--ink);
@@ -39,7 +61,7 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: radial-gradient(circle, #d0cec8 1px, transparent 1px);
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
   background-size: 28px 28px;
   opacity: 0.45;
   pointer-events: none;

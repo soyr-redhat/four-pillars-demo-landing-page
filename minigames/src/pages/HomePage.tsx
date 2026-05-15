@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { HatLogo } from '../components/HatLogo';
 import { RhDocLink } from '../components/RhDocLink';
+import { ThemeToggle } from '../components/ThemeToggle';
 import '../styles/demo-shell.css';
 import '../styles/home.css';
 
@@ -13,6 +14,7 @@ const Arrow = () => (
 export function HomePage() {
   return (
     <div className="home">
+      <ThemeToggle />
       <header>
         <div className="logo">
           <HatLogo className="hat-svg" size={36} alt="Red Hat" />
