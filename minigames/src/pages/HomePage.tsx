@@ -14,8 +14,7 @@ const Arrow = () => (
 export function HomePage() {
   return (
     <div className="home">
-      <ThemeToggle />
-      <header>
+      <header style={{ position: 'relative' }}>
         <div className="logo">
           <HatLogo className="hat-svg" size={36} alt="Red Hat" />
           <div className="logo-wordmark">
@@ -24,6 +23,7 @@ export function HomePage() {
           </div>
         </div>
         <div className="header-pill">7 Techniques</div>
+        <ThemeToggle />
       </header>
 
       <section className="hero">
